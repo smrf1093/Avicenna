@@ -1,0 +1,77 @@
+---
+const toolGroups = [
+  {
+    name: "Code Exploration",
+    color: "accent-blue",
+    tools: [
+      { name: "search_code", description: "Semantic search across indexed code by meaning" },
+      { name: "find_symbol", description: "Find function/class/variable with dependency graph" },
+      { name: "get_dependencies", description: "What a file or symbol imports, calls, or extends" },
+      { name: "get_dependents", description: "Reverse dependencies — what depends on a target" },
+      { name: "get_file_summary", description: "Structural summary without reading full contents" },
+      { name: "index_repository", description: "Parse and index a codebase (incremental support)" },
+      { name: "refresh_index", description: "Re-index only files changed since last run" },
+    ],
+  },
+  {
+    name: "Architecture Advice",
+    color: "accent-purple",
+    tools: [
+      { name: "advise", description: "Best-practice advice matched by semantic similarity" },
+      { name: "list_skills", description: "List all loaded advisor skills with metadata" },
+    ],
+  },
+  {
+    name: "Analytics",
+    color: "accent-green",
+    tools: [
+      { name: "index_status", description: "Indexing stats: file count, entities, languages" },
+      { name: "usage_stats", description: "Token savings report with daily breakdown" },
+      { name: "cancel_indexing", description: "Cancel a currently running indexing operation" },
+    ],
+  },
+];
+
+const colorMap: Record<string, { label: string; border: string; dot: string }> = {
+  "accent-blue": { label: "text-accent-blue", border: "border-t-accent-blue", dot: "bg-accent-blue" },
+  "accent-purple": { label: "text-accent-purple", border: "border-t-accent-purple", dot: "bg-accent-purple" },
+  "accent-green": { label: "text-accent-green", border: "border-t-accent-green", dot: "bg-accent-green" },
+};
+---
+
+<section id="tools" class="py-20 bg-bg-primary">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">12 MCP Tools</h2>
+      <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+        Everything Claude needs to navigate your codebase — nothing it doesn't.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {toolGroups.map((group) => {
+        const colors = colorMap[group.color];
+        return (
+          <div class:list={["bg-bg-card rounded-xl border border-border overflow-hidden border-t-2", colors.border]}>
+            <div class="px-5 py-4 border-b border-border">
+              <div class="flex items-center gap-2">
+                <div class:list={["w-2 h-2 rounded-full", colors.dot]} />
+                <h3 class:list={["text-sm font-semibold uppercase tracking-wider", colors.label]}>
+                  {group.name}
+                </h3>
+              </div>
+            </div>
+            <div class="divide-y divide-border">
+              {group.tools.map((tool) => (
+                <div class="px-5 py-3">
+                  <code class="text-sm text-accent-cyan font-mono">{tool.name}</code>
+                  <p class="text-text-secondary text-xs mt-1">{tool.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

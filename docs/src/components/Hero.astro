@@ -1,0 +1,126 @@
+---
+
+---
+
+<section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+  <!-- Background glow -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background: radial-gradient(ellipse at top center, rgba(59, 130, 246, 0.08) 0%, transparent 50%)"
+  ></div>
+
+  <div class="relative max-w-6xl mx-auto px-6">
+    <!-- Badge -->
+    <div class="flex justify-center mb-8">
+      <span
+        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-accent-blue/10 text-accent-blue border border-accent-blue/20"
+      >
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
+        MCP Extension for Claude CLI
+      </span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-center text-4xl sm:text-5xl md:text-7xl font-bold leading-tight tracking-tight mb-6">
+      Code
+      <span class="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">
+        Knowledge Graph
+      </span>
+      <br />
+      for Claude CLI
+    </h1>
+
+    <!-- Subheading -->
+    <p class="text-center text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed">
+      Reduce token usage by 5-10x with intelligent, graph-aware code retrieval.
+      Fully local. Zero config. No API keys.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex justify-center gap-4 mb-16">
+      <a
+        href="#quickstart"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue/90 text-white font-medium transition-colors"
+      >
+        Get Started
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+      <a
+        href="https://github.com/smrf1093/Avicenna"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border-accent text-text-secondary hover:text-text-primary hover:border-text-muted font-medium transition-colors"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <!-- Terminal Demo -->
+    <div class="max-w-5xl mx-auto rounded-xl border border-border overflow-hidden shadow-2xl shadow-accent-blue/5">
+      <!-- Terminal chrome -->
+      <div class="flex items-center gap-2 px-4 py-3 bg-bg-secondary border-b border-border">
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+        </div>
+        <span class="text-xs text-text-muted ml-2 font-mono">Terminal</span>
+      </div>
+
+      <!-- Terminal content -->
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <!-- Before -->
+        <div class="p-5 bg-bg-secondary/50">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-accent-amber">Before</span>
+            <span class="text-xs text-text-muted">grep / glob / read</span>
+          </div>
+          <pre class="text-sm leading-relaxed overflow-x-auto"><code><span class="text-accent-cyan">$</span> <span class="text-text-primary">rg "authentication" --files-with-matches</span>
+<span class="text-text-muted">  src/auth/middleware.py</span>
+<span class="text-text-muted">  src/auth/tokens.py</span>
+<span class="text-text-muted">  src/api/views.py</span>
+<span class="text-text-muted">  src/api/permissions.py</span>
+<span class="text-text-muted">  ... 8 more files</span>
+
+<span class="text-accent-cyan">$</span> <span class="text-text-primary">cat src/auth/middleware.py</span>   <span class="text-text-muted"># 200 lines</span>
+<span class="text-accent-cyan">$</span> <span class="text-text-primary">cat src/auth/tokens.py</span>       <span class="text-text-muted"># 150 lines</span>
+<span class="text-accent-cyan">$</span> <span class="text-text-primary">cat src/api/views.py</span>         <span class="text-text-muted"># 300 lines</span>
+
+<span class="text-accent-amber font-semibold">  ~8,000 tokens consumed</span></code></pre>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden md:block border-l border-border"></div>
+
+        <!-- After -->
+        <div class="p-5 bg-bg-secondary/50 border-t md:border-t-0 border-border">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-accent-green">After</span>
+            <span class="text-xs text-text-muted">Avicenna</span>
+          </div>
+          <pre class="text-sm leading-relaxed overflow-x-auto"><code><span class="text-accent-cyan">$</span> <span class="text-text-primary">search_code("authentication middleware")</span>
+
+<span class="text-accent-blue">  auth/middleware.py:15</span> <span class="text-text-muted">—</span> <span class="text-text-primary">AuthMiddleware</span>
+<span class="text-text-muted">    class AuthMiddleware(BaseHTTPMiddleware)</span>
+<span class="text-text-muted">    lines: 15-45</span>
+<span class="text-text-muted">    calls: verify_token, get_user</span>
+
+<span class="text-accent-blue">  auth/tokens.py:8</span> <span class="text-text-muted">—</span> <span class="text-text-primary">verify_token</span>
+<span class="text-text-muted">    def verify_token(token: str) -> User</span>
+<span class="text-text-muted">    lines: 8-22</span>
+
+
+
+<span class="text-accent-green font-semibold">  ~800 tokens consumed</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

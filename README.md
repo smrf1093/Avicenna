@@ -10,7 +10,7 @@ Code knowledge graph MCP extension for Claude CLI. Reduces token usage by replac
 
 ```bash
 # Requires Python 3.11-3.12 and Claude CLI
-git clone https://github.com/YOUR_USERNAME/avicenna.git
+git clone https://github.com/smrf1093/Avicenna.git
 cd avicenna
 python -m venv .venv
 source .venv/bin/activate
