@@ -1,0 +1,43 @@
+[project]
+name = "avicenna"
+version = "0.1.0"
+description = "Code knowledge graph MCP extension for Claude CLI — reduces token usage via intelligent code retrieval"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "cognee>=0.5.0",
+    "mcp[cli]",
+    "tree-sitter>=0.23.0",
+    "tree-sitter-python",
+    "tree-sitter-javascript",
+    "tree-sitter-typescript",
+    "pathspec>=0.12",
+    "pydantic-settings>=2.0",
+    "click>=8.0",
+]
+
+[project.scripts]
+avicenna = "avicenna.cli:main"
+
+[project.optional-dependencies]
+watch = [
+    "watchfiles>=1.0",
+]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+    "watchfiles>=1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/avicenna"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
