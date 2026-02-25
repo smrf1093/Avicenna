@@ -1,0 +1,83 @@
+---
+const features = [
+  {
+    title: "Semantic Code Search",
+    description:
+      "Natural language queries instead of regex. Ask for 'authentication middleware' and get precise results with file paths and line numbers.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+    color: "accent-blue",
+  },
+  {
+    title: "Dependency Analysis",
+    description:
+      "Trace what any file or symbol depends on, and what depends on it. Impact analysis before refactoring — in a single tool call.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4M8.5 16.5 10 13M15.5 16.5 14 13"/></svg>`,
+    color: "accent-purple",
+  },
+  {
+    title: "Advisor Skills",
+    description:
+      "Built-in guidance for Django, React, SOLID principles, and design patterns. Extensible with custom SKILL.md files.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>`,
+    color: "accent-amber",
+  },
+  {
+    title: "Fully Local & Free",
+    description:
+      "No API keys, no Ollama, no external services. FastEmbed runs on CPU. LanceDB and Kuzu are file-based. Everything stays on your machine.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+    color: "accent-green",
+  },
+  {
+    title: "Per-Repo Isolation",
+    description:
+      "Each repository gets its own isolated knowledge graph. Index multiple repos in parallel with no cross-contamination.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+    color: "accent-cyan",
+  },
+  {
+    title: "Token Savings",
+    description:
+      "5-10x reduction in exploration tokens. Returns signatures and line numbers instead of full source files. Built-in metrics tracking.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    color: "accent-green",
+  },
+];
+
+const colorMap: Record<string, { bg: string; text: string }> = {
+  "accent-blue": { bg: "bg-accent-blue/10", text: "text-accent-blue" },
+  "accent-purple": { bg: "bg-accent-purple/10", text: "text-accent-purple" },
+  "accent-cyan": { bg: "bg-accent-cyan/10", text: "text-accent-cyan" },
+  "accent-green": { bg: "bg-accent-green/10", text: "text-accent-green" },
+  "accent-amber": { bg: "bg-accent-amber/10", text: "text-accent-amber" },
+};
+---
+
+<section id="features" class="py-20 bg-bg-secondary">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Avicenna?</h2>
+      <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+        A smarter way for Claude to understand your codebase — semantic search,
+        dependency graphs, and architectural advice in one MCP extension.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {features.map((feature) => {
+        const colors = colorMap[feature.color];
+        return (
+          <div class="bg-bg-card rounded-xl p-6 border border-border hover:border-border-accent transition-colors">
+            <div class:list={["w-10 h-10 rounded-lg flex items-center justify-center", colors.bg]}>
+              <div class:list={["w-5 h-5", colors.text]} set:html={feature.icon} />
+            </div>
+            <h3 class="text-lg font-semibold mt-4">{feature.title}</h3>
+            <p class="text-text-secondary mt-2 text-sm leading-relaxed">
+              {feature.description}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

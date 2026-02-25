@@ -1,0 +1,91 @@
+---
+const nodes = [
+  { label: "Codebase", sublabel: "Python / TS / JS", color: "accent-blue" },
+  { label: "tree-sitter", sublabel: "Parsing", color: "accent-purple" },
+  { label: "Knowledge Graph", sublabel: "LanceDB + Kuzu", color: "accent-cyan" },
+  { label: "MCP Server", sublabel: "FastMCP stdio", color: "accent-green" },
+  { label: "Claude CLI", sublabel: "Your IDE", color: "accent-amber" },
+];
+
+const highlights = [
+  { title: "No LLM during indexing", description: "Embeddings generated locally by FastEmbed on CPU" },
+  { title: "File-based storage", description: "LanceDB (vectors) + Kuzu (graph) + SQLite (state)" },
+  { title: "Per-repo isolation", description: "Each repo gets ~/.avicenna/repos/{hash}/" },
+  { title: "Incremental indexing", description: "SHA-256 content hashes detect only changed files" },
+];
+
+const colorMap: Record<string, string> = {
+  "accent-blue": "border-accent-blue text-accent-blue",
+  "accent-purple": "border-accent-purple text-accent-purple",
+  "accent-cyan": "border-accent-cyan text-accent-cyan",
+  "accent-green": "border-accent-green text-accent-green",
+  "accent-amber": "border-accent-amber text-accent-amber",
+};
+---
+
+<section id="architecture" class="py-20 bg-bg-secondary">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+      <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+        From source code to intelligent responses — no cloud services required.
+      </p>
+    </div>
+
+    <!-- Flow diagram -->
+    <div class="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-0 mb-16">
+      {nodes.map((node, i) => (
+        <>
+          <div class:list={[
+            "bg-bg-card rounded-lg px-5 py-4 border text-center min-w-[140px]",
+            colorMap[node.color],
+          ]}>
+            <div class="font-semibold text-sm text-text-primary">{node.label}</div>
+            <div class="text-xs text-text-muted mt-1">{node.sublabel}</div>
+          </div>
+          {i < nodes.length - 1 && (
+            <>
+              <svg class="hidden md:block w-8 h-8 text-text-muted flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+              <svg class="md:hidden w-6 h-6 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+            </>
+          )}
+        </>
+      ))}
+    </div>
+
+    <!-- Architecture highlights -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-14">
+      {highlights.map((item) => (
+        <div class="flex items-start gap-3 bg-bg-card rounded-lg p-4 border border-border">
+          <svg class="w-5 h-5 text-accent-green flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <div>
+            <span class="text-sm font-semibold">{item.title}</span>
+            <p class="text-text-secondary text-xs mt-0.5">{item.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Source tree -->
+    <div class="max-w-2xl mx-auto">
+      <h3 class="text-lg font-semibold text-center mb-4">Project Structure</h3>
+      <div class="rounded-lg border border-border bg-bg-card p-5">
+        <pre class="font-mono text-sm text-text-secondary leading-relaxed"><code><span class="text-text-primary">src/avicenna/</span>
+  <span class="text-accent-blue">config/</span>      <span class="text-text-muted">Pydantic settings from .env</span>
+  <span class="text-accent-blue">models/</span>      <span class="text-text-muted">6 DataPoint subclasses</span>
+  <span class="text-accent-purple">parser/</span>      <span class="text-text-muted">tree-sitter engine + language queries</span>
+  <span class="text-accent-purple">indexer/</span>     <span class="text-text-muted">File discovery, hashing, incremental state</span>
+  <span class="text-accent-cyan">graph/</span>       <span class="text-text-muted">Kuzu + LanceDB engines, search, ingestion</span>
+  <span class="text-accent-amber">advisor/</span>     <span class="text-text-muted">Skill registry, matching, formatting</span>
+  <span class="text-accent-green">server/</span>      <span class="text-text-muted">FastMCP server + tool implementations</span>
+  <span class="text-accent-green">stats/</span>       <span class="text-text-muted">Token savings tracker</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>

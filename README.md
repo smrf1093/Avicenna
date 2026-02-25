@@ -10,7 +10,7 @@ Code knowledge graph MCP extension for Claude CLI. Reduces token usage by replac
 
 ```bash
 # Requires Python 3.11-3.12 and Claude CLI
-git clone https://github.com/YOUR_USERNAME/avicenna.git
+git clone https://github.com/smrf1093/Avicenna.git
 cd avicenna
 python -m venv .venv
 source .venv/bin/activate
@@ -357,6 +357,22 @@ pip install -e ".[dev]"
 ruff check src/
 pytest
 ```
+
+## Built With
+
+Avicenna stands on the shoulders of these excellent open-source projects:
+
+| Library | Role |
+|---------|------|
+| [Cognee](https://github.com/topoteretes/cognee) | Knowledge graph framework — data point modeling, graph/vector infrastructure |
+| [tree-sitter](https://github.com/tree-sitter/tree-sitter) | Incremental parsing for accurate code extraction across languages |
+| [FastMCP](https://github.com/jlowin/fastmcp) | Model Context Protocol server framework for Claude CLI integration |
+| [FastEmbed](https://github.com/qdrant/fastembed) | Local CPU-based text embeddings — no API keys, no GPU required |
+| [LanceDB](https://github.com/lancedb/lancedb) | Embedded vector database — file-based, zero-config |
+| [Kuzu](https://github.com/kuzudb/kuzu) | Embedded graph database — file-based, high-performance |
+| [Pydantic](https://github.com/pydantic/pydantic) | Settings management and data validation |
+| [Astro](https://github.com/withastro/astro) | Landing page — static site generator with zero JS by default |
+| [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) | Landing page styling |
 
 ## License
 

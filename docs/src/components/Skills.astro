@@ -1,0 +1,116 @@
+---
+const skills = [
+  {
+    name: "django",
+    category: "framework",
+    description: "Django architecture, views, models, ORM optimization, DRF, testing, and security best practices.",
+    domains: ["django", "python", "orm", "web", "rest-api"],
+  },
+  {
+    name: "react",
+    category: "framework",
+    description: "React patterns, hooks, component design, state management, performance optimization, and TypeScript integration.",
+    domains: ["react", "typescript", "javascript", "frontend", "hooks"],
+  },
+  {
+    name: "solid-principles",
+    category: "principle",
+    description: "SRP, OCP, LSP, ISP, and DIP explained with real Python and TypeScript code examples.",
+    domains: ["solid", "architecture", "oop", "design", "clean-code"],
+  },
+  {
+    name: "strategy-pattern",
+    category: "pattern",
+    description: "Strategy pattern: when to use, Python and TypeScript implementations, comparison with other behavioral patterns.",
+    domains: ["strategy", "design-pattern", "behavioral", "polymorphism"],
+  },
+];
+
+const categoryColors: Record<string, string> = {
+  framework: "bg-accent-blue/10 text-accent-blue",
+  principle: "bg-accent-purple/10 text-accent-purple",
+  pattern: "bg-accent-cyan/10 text-accent-cyan",
+};
+
+const locations = [
+  { path: "{repo}/.avicenna/skills/", label: "Project", boost: "+20", description: "Team-specific overrides" },
+  { path: "~/.avicenna/skills/", label: "User", boost: "+10", description: "User-installed skills" },
+  { path: "Built-in", label: "Built-in", boost: "+0", description: "Ships with Avicenna" },
+];
+---
+
+<section id="skills" class="py-20 bg-bg-secondary">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Advisor Skills</h2>
+      <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+        Built-in knowledge about frameworks, principles, and patterns — extensible with your own SKILL.md files.
+      </p>
+    </div>
+
+    <!-- Skill cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+      {skills.map((skill) => (
+        <div class="bg-bg-card rounded-lg p-5 border-l-4 border-accent-purple border border-border">
+          <div class="flex items-start justify-between mb-3">
+            <code class="text-sm font-mono text-text-primary font-semibold">{skill.name}</code>
+            <span class:list={["text-xs px-2 py-0.5 rounded-full font-medium", categoryColors[skill.category]]}>
+              {skill.category}
+            </span>
+          </div>
+          <p class="text-text-secondary text-sm leading-relaxed mb-3">{skill.description}</p>
+          <div class="flex flex-wrap gap-1.5">
+            {skill.domains.map((domain) => (
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-accent-blue/10 text-accent-blue">
+                {domain}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Extensibility -->
+    <div class="mb-14">
+      <h3 class="text-xl font-semibold text-center mb-6">Skill Discovery Locations</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {locations.map((loc) => (
+          <div class="bg-bg-card rounded-lg p-4 border border-border text-center">
+            <span class="text-xs font-semibold uppercase tracking-wider text-accent-green">{loc.label}</span>
+            <p class="font-mono text-sm text-text-primary mt-2">{loc.path}</p>
+            <p class="text-text-muted text-xs mt-1">{loc.description}</p>
+            <span class="inline-block mt-2 text-xs font-mono text-accent-amber">priority {loc.boost}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- SKILL.md format preview -->
+    <div class="max-w-2xl mx-auto">
+      <h3 class="text-xl font-semibold text-center mb-6">SKILL.md Format</h3>
+      <div class="rounded-xl border border-border overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-3 bg-bg-secondary border-b border-border">
+          <div class="flex gap-1.5">
+            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+          </div>
+          <span class="text-xs text-text-muted ml-2 font-mono">SKILL.md</span>
+        </div>
+        <pre class="p-5 bg-bg-secondary/50 text-sm leading-relaxed overflow-x-auto"><code><span class="text-text-muted">---</span>
+<span class="text-accent-cyan">name</span><span class="text-text-muted">:</span> <span class="text-accent-green">my-framework</span>
+<span class="text-accent-cyan">description</span><span class="text-text-muted">:</span> <span class="text-text-primary">Best practices for...</span>
+<span class="text-accent-cyan">category</span><span class="text-text-muted">:</span> <span class="text-accent-green">framework</span>
+<span class="text-accent-cyan">domains</span><span class="text-text-muted">:</span> <span class="text-text-primary">[django, python, orm]</span>
+<span class="text-accent-cyan">triggers</span><span class="text-text-muted">:</span> <span class="text-text-primary">["django views", "manage.py"]</span>
+<span class="text-accent-cyan">priority</span><span class="text-text-muted">:</span> <span class="text-accent-amber">50</span>
+<span class="text-accent-cyan">depends-on</span><span class="text-text-muted">:</span> <span class="text-text-primary">[solid-principles]</span>
+<span class="text-text-muted">---</span>
+
+<span class="text-accent-purple"># My Framework Guide</span>
+
+<span class="text-text-secondary">Markdown body with best practices...</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
