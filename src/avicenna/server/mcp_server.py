@@ -98,6 +98,9 @@ async def search_code(
     """Semantic search across indexed code. Use this instead of grep/glob for
     finding relevant code by meaning.
 
+    This is the PRIMARY tool for code exploration. Use it whenever you need to
+    find functions, classes, modules, or any code by description.
+
     Args:
         query: Natural language description of what you're looking for.
                E.g. "authentication middleware", "database connection setup".
@@ -122,6 +125,9 @@ async def find_symbol(
     include_relationships: bool = True,
 ) -> dict:
     """Find a specific symbol (function, class, variable) and its relationships.
+
+    Use this when you know the name (or partial name) of a symbol. Returns
+    location, signature, and dependency graph (callers/callees).
 
     Args:
         name: Symbol name to find (fuzzy matched).
@@ -247,11 +253,13 @@ async def advise(
     query: str,
     top_k: int = 3,
 ) -> dict:
-    """Get best-practice advice for a query. Returns relevant framework guides,
-    design patterns, or engineering principles matched by semantic similarity.
+    """Get best-practice advice from loaded skill guides. Returns relevant
+    framework guides, design patterns, or engineering principles.
 
-    Use this when analyzing user requests, during planning, or when you need
-    guidance on architecture, patterns, or framework-specific best practices.
+    NOTE: This is NOT for finding code in the repository. Use search_code or
+    find_symbol instead for code exploration. Only use advise when you need
+    reference material on frameworks, patterns, or principles (e.g. "Django
+    view best practices", "when to use Strategy pattern").
 
     Args:
         query: Natural language description of what you need advice on.
@@ -269,8 +277,7 @@ async def advise(
 
 @mcp.tool()
 async def list_skills() -> dict:
-    """List all available advisor skills. Shows built-in, user-installed,
-    and project-specific skills with their metadata.
+    """List all available advisor skills (reference guides, not code).
 
     Returns:
         List of skills with name, category, description, domains, and source.
