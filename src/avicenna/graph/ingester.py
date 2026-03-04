@@ -3,7 +3,7 @@
 Direct ingestion pipeline that bypasses Cognee's ``add_data_points()`` to
 avoid the expensive recursive ``get_graph_from_model()`` traversal.  We
 know our DataPoint structure exactly, so we can extract nodes + edges,
-embed, and write to LanceDB/Kuzu directly — the same approach the search
+embed, and write to LanceDB/SQLite directly — the same approach the search
 layer already uses for reading.
 """
 
@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 # Relationship field names on each entity type.  These are DataPoint fields
 # that point to *other* DataPoints (i.e. graph edges) rather than scalar
 # properties.  We need to know them so we can:
-#   (a) exclude them when serialising node properties for Kuzu, and
+#   (a) exclude them when serialising node properties for the graph DB, and
 #   (b) traverse them to build the edge list.
 # ---------------------------------------------------------------------------
 
@@ -385,10 +385,11 @@ def _flatten_data_points(
 def _strip_relationships(nodes: list[DataPoint]) -> list[DataPoint]:
     """Create copies of DataPoints with relationship fields set to None.
 
-    Kuzu's ``add_nodes`` calls ``model_dump()`` then ``json.dumps()`` on
-    each node's properties.  DataPoint references (e.g. ``defined_in``,
-    ``calls``) are not JSON-serializable, so we must strip them before
-    writing.  The relationships are already captured as separate edges.
+    The graph adapter's ``add_nodes`` calls ``model_dump()`` then
+    ``json.dumps()`` on each node's properties.  DataPoint references
+    (e.g. ``defined_in``, ``calls``) are not JSON-serializable, so we
+    must strip them before writing.  The relationships are already
+    captured as separate edges.
     """
     cleaned = []
     for node in nodes:
@@ -408,7 +409,7 @@ def _strip_relationships(nodes: list[DataPoint]) -> list[DataPoint]:
 
 
 async def _write_graph_nodes(graph, nodes: list[DataPoint]) -> None:
-    """Write nodes to Kuzu graph in a single batch."""
+    """Write nodes to SQLite graph in a single batch."""
     if not nodes:
         return
     clean_nodes = _strip_relationships(nodes)
@@ -416,7 +417,7 @@ async def _write_graph_nodes(graph, nodes: list[DataPoint]) -> None:
 
 
 async def _write_graph_edges(graph, edges: list[tuple[str, str, str, dict]]) -> None:
-    """Write edges to Kuzu graph in a single batch."""
+    """Write edges to SQLite graph in a single batch."""
     if not edges:
         return
     await graph.add_edges(edges)
@@ -471,14 +472,14 @@ async def _write_vectors(
 
 
 async def ingest_data_points(data_points: list, repo_id: str) -> None:
-    """Ingest DataPoints directly into Kuzu graph + LanceDB vectors.
+    """Ingest DataPoints directly into SQLite graph + LanceDB vectors.
 
     This bypasses Cognee's ``add_data_points()`` which uses the expensive
     recursive ``get_graph_from_model()`` traversal.  Instead we:
 
     1. Flatten our known DataPoint structure into nodes + edges directly
        (replaces ``get_graph_from_model`` — saves ~5.6s)
-    2. Write nodes + edges to Kuzu in batch
+    2. Write nodes + edges to SQLite in batch
     3. Write vectors to LanceDB per collection (adapter handles embedding)
 
     Graph writes and vector writes run concurrently via ``asyncio.gather``.
@@ -509,7 +510,7 @@ async def ingest_data_points(data_points: list, repo_id: str) -> None:
     )
 
     # Phase 2: Write graph and vectors concurrently.
-    # Kuzu and LanceDB are independent databases so these can overlap.
+    # SQLite and LanceDB are independent databases so these can overlap.
     t0 = time.time()
     graph_task = asyncio.gather(
         _write_graph_nodes(graph, nodes),

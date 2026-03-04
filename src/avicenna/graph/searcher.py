@@ -1,6 +1,6 @@
 """Code-aware search layer querying per-repo vector + graph stores directly.
 
-Each repo has its own LanceDB + Kuzu databases.  When ``repo_id`` is
+Each repo has its own LanceDB + SQLite graph databases.  When ``repo_id`` is
 provided, only that repo is searched.  When ``repo_id`` is None, we fan
 out across all indexed repos and merge results by score.
 """

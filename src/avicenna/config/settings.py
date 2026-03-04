@@ -30,7 +30,7 @@ class AvicennaSettings(BaseSettings):
 
     # Storage (all file-based, no external services)
     vector_db_provider: str = "lancedb"
-    graph_database_provider: str = "kuzu"
+    graph_database_provider: str = "sqlite"
     db_provider: str = "sqlite"
 
     # Avicenna-specific

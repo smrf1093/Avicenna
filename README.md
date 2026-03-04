@@ -2,7 +2,7 @@
 
 Code knowledge graph MCP extension for Claude CLI. Reduces token usage by replacing brute-force file searching with intelligent, graph-aware code retrieval.
 
-**Fully local and free** — no API keys, no Ollama, no external services. Uses FastEmbed for local CPU-based embeddings and file-based storage (LanceDB + Kuzu + SQLite).
+**Fully local and free** — no API keys, no Ollama, no external services. Uses FastEmbed for local CPU-based embeddings and file-based storage (LanceDB + SQLite).
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ Codebase --> tree-sitter parsing --> per-repo knowledge graph (vectors + graph D
 Claude CLI <-- MCP stdio <-- Avicenna MCP Server <-- vector search + graph queries
 ```
 
-No separate LLM is needed. Avicenna writes directly to Kuzu (graph) and LanceDB (vectors) — no LLM is called during indexing. Embeddings are generated locally by FastEmbed. At search time, Claude itself (already running in your CLI) does all the reasoning.
+No separate LLM is needed. Avicenna writes directly to SQLite (graph) and LanceDB (vectors) — no LLM is called during indexing. Embeddings are generated locally by FastEmbed. At search time, Claude itself (already running in your CLI) does all the reasoning.
 
 ### Per-Repository Isolation
 
@@ -66,10 +66,10 @@ Each indexed repository gets its own isolated database under `~/.avicenna/repos/
 ```
 ~/.avicenna/repos/
 ├── a1b2c3d4e5f67890/     # Project A
-│   ├── graph              # Kuzu graph database
+│   ├── graph.db           # SQLite graph database (WAL mode)
 │   └── vectors.lancedb/   # LanceDB vector database
 ├── f0e1d2c3b4a59876/     # Project B
-│   ├── graph
+│   ├── graph.db
 │   └── vectors.lancedb/
 └── ...
 ```
@@ -283,11 +283,11 @@ cp .env.template .env  # optional — only if you want to customize
 | `EMBEDDING_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | Embedding model |
 | `EMBEDDING_DIMENSIONS` | `384` | Embedding vector size |
 | `VECTOR_DB_PROVIDER` | `lancedb` | Vector store (file-based) |
-| `GRAPH_DATABASE_PROVIDER` | `kuzu` | Graph DB (file-based) |
+| `GRAPH_DATABASE_PROVIDER` | `sqlite` | Graph DB (file-based, WAL mode) |
 | `DB_PROVIDER` | `sqlite` | Relational DB (file-based) |
 | `AVICENNA_DATA_DIR` | `~/.avicenna` | Where indexes are stored |
 | `AVICENNA_MAX_FILE_SIZE_KB` | `500` | Skip files larger than this |
-| `AVICENNA_BATCH_SIZE` | `50` | DataPoints per ingestion batch |
+| `AVICENNA_BATCH_SIZE` | `200` | DataPoints per ingestion batch |
 
 ### Optional: Higher Quality Embeddings with Ollama
 
@@ -340,8 +340,9 @@ src/avicenna/
 │   ├── repository_indexer.py   # Orchestrator (per-repo locking)
 │   └── watcher.py              # File watcher for auto re-indexing
 ├── graph/
-│   ├── engines.py              # Per-repo Kuzu + LanceDB engine cache
-│   ├── ingester.py             # ParseResult -> DataPoints -> direct Kuzu/LanceDB writes
+│   ├── engines.py              # Per-repo SQLite + LanceDB engine cache
+│   ├── sqlite_graph.py         # SQLite graph adapter (WAL mode, concurrent readers)
+│   ├── ingester.py             # ParseResult -> DataPoints -> direct SQLite/LanceDB writes
 │   ├── searcher.py             # Per-repo and cross-repo vector + graph queries
 │   └── query_builder.py        # Tool params -> search queries
 └── server/
@@ -364,12 +365,11 @@ Avicenna stands on the shoulders of these excellent open-source projects:
 
 | Library | Role |
 |---------|------|
-| [Cognee](https://github.com/topoteretes/cognee) | Knowledge graph framework — data point modeling, graph/vector infrastructure |
+| [Cognee](https://github.com/topoteretes/cognee) | Knowledge graph framework — data point modeling, vector infrastructure |
 | [tree-sitter](https://github.com/tree-sitter/tree-sitter) | Incremental parsing for accurate code extraction across languages |
 | [FastMCP](https://github.com/jlowin/fastmcp) | Model Context Protocol server framework for Claude CLI integration |
 | [FastEmbed](https://github.com/qdrant/fastembed) | Local CPU-based text embeddings — no API keys, no GPU required |
 | [LanceDB](https://github.com/lancedb/lancedb) | Embedded vector database — file-based, zero-config |
-| [Kuzu](https://github.com/kuzudb/kuzu) | Embedded graph database — file-based, high-performance |
 | [Pydantic](https://github.com/pydantic/pydantic) | Settings management and data validation |
 | [Astro](https://github.com/withastro/astro) | Landing page — static site generator with zero JS by default |
 | [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) | Landing page styling |

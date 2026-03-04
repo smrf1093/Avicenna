@@ -136,21 +136,6 @@ def serve(transport: str, port: int):
 )
 def index(path: str, full: bool, languages: tuple[str, ...]):
     """Index a code repository."""
-    from avicenna.indexer.repository_indexer import is_server_running
-
-    running, pid = is_server_running()
-    if running:
-        click.echo(
-            f"Error: An Avicenna MCP server is already running (pid {pid}).\n"
-            f"The Kuzu graph database only supports one process at a time.\n\n"
-            f"To index from a running Claude session, use the index_repository\n"
-            f"MCP tool instead of the CLI:\n\n"
-            f"  Claude> Please index /path/to/project using Avicenna\n\n"
-            f"Or close all Claude sessions using Avicenna first, then retry.",
-            err=True,
-        )
-        raise SystemExit(1)
-
     apply_cognee_env()
 
     async def _run():
@@ -200,20 +185,6 @@ def init_project(path: str, skip_index: bool, skip_mcp: bool):
     if not os.path.isdir(project_path):
         click.echo(f"Error: {project_path} is not a directory.", err=True)
         raise SystemExit(1)
-
-    # Check for running server before indexing
-    if not skip_index:
-        from avicenna.indexer.repository_indexer import is_server_running
-
-        running, pid = is_server_running()
-        if running:
-            click.echo(
-                f"\nWarning: Avicenna MCP server is running (pid {pid}). "
-                f"Indexing will be skipped.\n"
-                f"Use the index_repository tool from your Claude session instead.\n",
-                err=True,
-            )
-            skip_index = True
 
     click.echo(f"\nAvicenna — Initializing for: {project_path}\n")
 

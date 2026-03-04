@@ -1,12 +1,12 @@
 """Per-repo database engine management.
 
-Each indexed repository gets its own Kuzu graph DB and LanceDB vector DB
+Each indexed repository gets its own SQLite graph DB and LanceDB vector DB
 under ``~/.avicenna/repos/{repo_id}/``.  This module lazily creates and
 caches adapter instances so that the rest of the codebase can simply call
 ``get_engines(repo_id)`` without worrying about paths or singletons.
 
-We bypass Cognee's factory functions (which are LRU-cached singletons)
-and construct ``KuzuAdapter`` / ``LanceDBAdapter`` directly.
+The graph adapter uses SQLite in WAL mode for concurrent reader access.
+LanceDB handles vector storage and embedding.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from avicenna.config.settings import get_settings
 
 logger = logging.getLogger(__name__)
 
-# Cache: repo_id -> (KuzuAdapter, LanceDBAdapter)
+# Cache: repo_id -> (SqliteGraphAdapter, LanceDBAdapter)
 _engine_cache: dict[str, tuple] = {}
 
 # Shared embedding engine (stateless FastEmbed, expensive to load)
@@ -53,14 +53,23 @@ async def get_engines(repo_id: str):
         return _engine_cache[repo_id]
 
     rd = repo_db_dir(repo_id)
-    graph_path = str(rd / "graph")
+    graph_path = str(rd / "graph.db")
     vector_path = str(rd / "vectors.lancedb")
 
-    from cognee.infrastructure.databases.graph.kuzu.adapter import KuzuAdapter
+    # Detect old Kuzu databases and warn
+    old_kuzu = rd / "graph"
+    if old_kuzu.exists() and not Path(graph_path).exists():
+        logger.warning(
+            "Repo %s has old Kuzu graph data at %s. "
+            "Re-index required: data will be regenerated in SQLite. "
+            "Old Kuzu files can be safely deleted.",
+            repo_id,
+            old_kuzu,
+        )
 
-    graph = KuzuAdapter(db_path=graph_path)
-    if hasattr(graph, "initialize"):
-        await graph.initialize()
+    from avicenna.graph.sqlite_graph import SqliteGraphAdapter
+
+    graph = SqliteGraphAdapter(db_path=graph_path)
 
     from cognee.infrastructure.databases.vector.lancedb.LanceDBAdapter import (
         LanceDBAdapter,
@@ -86,8 +95,8 @@ async def get_all_engines() -> dict[str, tuple]:
 
     for child in repos_dir.iterdir():
         if child.is_dir() and child.name not in _engine_cache:
-            # Only instantiate if the graph dir actually exists (was indexed)
-            if (child / "graph").exists():
+            # Detect new SQLite DB or old Kuzu directory
+            if (child / "graph.db").exists() or (child / "graph").exists():
                 await get_engines(child.name)
 
     return dict(_engine_cache)
