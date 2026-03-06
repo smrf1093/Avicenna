@@ -1,0 +1,85 @@
+---
+const useCases = [
+  {
+    title: "Semantic Code Search",
+    description:
+      'Search for "authentication middleware" across a Python project and instantly find the relevant functions by meaning, without knowing exact file names or function names.',
+    tool: "search_code",
+    color: "accent-blue",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+  },
+  {
+    title: "Pre-Refactoring Impact Analysis",
+    description:
+      "Before refactoring a utility function, run find_symbol and get_dependents to see every file and function that depends on it.",
+    tool: "find_symbol + get_dependents",
+    color: "accent-purple",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4M8.5 16.5 10 13M15.5 16.5 14 13"/></svg>`,
+  },
+  {
+    title: "Onboarding to Unfamiliar Codebases",
+    description:
+      "Index a new TypeScript monorepo and use get_file_summary to quickly understand the structure of unfamiliar files without reading their full contents.",
+    tool: "get_file_summary",
+    color: "accent-cyan",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+  },
+  {
+    title: "Keeping Search Fresh After Edits",
+    description:
+      "After making edits to several files, call refresh_index to update the knowledge graph, then use search_code to verify your changes are reflected.",
+    tool: "refresh_index",
+    color: "accent-green",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>`,
+  },
+  {
+    title: "Understanding Code Dependencies",
+    description:
+      "Use get_dependencies to trace what a module imports and calls, helping you understand unfamiliar code before making changes.",
+    tool: "get_dependencies",
+    color: "accent-amber",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10"/></svg>`,
+  },
+];
+
+const colorMap: Record<string, { bg: string; text: string; border: string }> = {
+  "accent-blue": { bg: "bg-accent-blue/10", text: "text-accent-blue", border: "border-accent-blue/20" },
+  "accent-purple": { bg: "bg-accent-purple/10", text: "text-accent-purple", border: "border-accent-purple/20" },
+  "accent-cyan": { bg: "bg-accent-cyan/10", text: "text-accent-cyan", border: "border-accent-cyan/20" },
+  "accent-green": { bg: "bg-accent-green/10", text: "text-accent-green", border: "border-accent-green/20" },
+  "accent-amber": { bg: "bg-accent-amber/10", text: "text-accent-amber", border: "border-accent-amber/20" },
+};
+---
+
+<section id="use-cases" class="py-20 bg-bg-primary">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Use Cases</h2>
+      <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+        Real workflows where Avicenna saves time and tokens.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {useCases.map((useCase) => {
+        const colors = colorMap[useCase.color];
+        return (
+          <div class="bg-bg-card rounded-xl p-6 border border-border hover:border-border-accent transition-colors flex flex-col">
+            <div class:list={["w-10 h-10 rounded-lg flex items-center justify-center", colors.bg]}>
+              <div class:list={["w-5 h-5", colors.text]} set:html={useCase.icon} />
+            </div>
+            <h3 class="text-lg font-semibold mt-4">{useCase.title}</h3>
+            <p class="text-text-secondary mt-2 text-sm leading-relaxed flex-1">
+              {useCase.description}
+            </p>
+            <div class="mt-4">
+              <span class:list={["inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono", colors.bg, colors.text]}>
+                {useCase.tool}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

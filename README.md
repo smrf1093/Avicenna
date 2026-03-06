@@ -6,20 +6,26 @@ Code knowledge graph MCP extension for Claude CLI. Reduces token usage by replac
 
 ## Quick Start
 
-### 1. Install
+### Option A: Install as Claude Code Plugin (Recommended)
+
+```bash
+# Inside Claude Code, run:
+/plugin install avicenna@claude-plugins-official
+```
+
+That's it — Avicenna tools are immediately available in all your projects.
+
+### Option B: Install from Source
 
 ```bash
 # Requires Python 3.11-3.12 and Claude CLI
 git clone https://github.com/smrf1093/Avicenna.git
-cd avicenna
+cd Avicenna
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
-```
 
-### 2. Initialize for your project
-
-```bash
+# Initialize for your project
 python -m avicenna init /path/to/your/project
 ```
 
@@ -28,16 +34,16 @@ This single command:
 - Indexes your project's codebase into a knowledge graph
 - Creates a `CLAUDE.md` in your project that tells Claude to prefer Avicenna tools
 
-### 3. Verify
+### Verify
 
 ```bash
 claude mcp list
 # Should show: ✓ avicenna
 ```
 
-### 4. Use
+### Use
 
-Open Claude CLI in your project — Avicenna tools are automatically available:
+Open Claude Code in your project — Avicenna tools are automatically available:
 
 > "Search the codebase for authentication middleware"
 
@@ -46,6 +52,14 @@ Open Claude CLI in your project — Avicenna tools are automatically available:
 > "What files depend on the database module?"
 
 Claude will use `search_code` and `find_symbol` instead of grep/glob, returning precise results with file paths and line numbers.
+
+## Use Cases
+
+- **Semantic code search**: Search for "authentication middleware" across a Python project and instantly find the relevant functions by meaning, without knowing exact file names or function names.
+- **Pre-refactoring impact analysis**: Before refactoring a utility function, run `find_symbol` and `get_dependents` to see every file and function that depends on it.
+- **Onboarding to unfamiliar codebases**: Index a new TypeScript monorepo and use `get_file_summary` to quickly understand the structure of unfamiliar files without reading their full contents.
+- **Keeping search fresh after edits**: After making edits to several files, call `refresh_index` to update the knowledge graph, then use `search_code` to verify your changes are reflected.
+- **Understanding code dependencies**: Use `get_dependencies` to trace what a module imports and calls, helping you understand unfamiliar code before making changes.
 
 ## How It Works
 

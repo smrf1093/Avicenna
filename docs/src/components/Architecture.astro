@@ -2,14 +2,14 @@
 const nodes = [
   { label: "Codebase", sublabel: "Python / TS / JS", color: "accent-blue" },
   { label: "tree-sitter", sublabel: "Parsing", color: "accent-purple" },
-  { label: "Knowledge Graph", sublabel: "LanceDB + Kuzu", color: "accent-cyan" },
+  { label: "Knowledge Graph", sublabel: "LanceDB + SQLite", color: "accent-cyan" },
   { label: "MCP Server", sublabel: "FastMCP stdio", color: "accent-green" },
   { label: "Claude CLI", sublabel: "Your IDE", color: "accent-amber" },
 ];
 
 const highlights = [
   { title: "No LLM during indexing", description: "Embeddings generated locally by FastEmbed on CPU" },
-  { title: "File-based storage", description: "LanceDB (vectors) + Kuzu (graph) + SQLite (state)" },
+  { title: "File-based storage", description: "LanceDB (vectors) + SQLite (graph + state)" },
   { title: "Per-repo isolation", description: "Each repo gets ~/.avicenna/repos/{hash}/" },
   { title: "Incremental indexing", description: "SHA-256 content hashes detect only changed files" },
 ];
@@ -81,7 +81,7 @@ const colorMap: Record<string, string> = {
   <span class="text-accent-blue">models/</span>      <span class="text-text-muted">6 DataPoint subclasses</span>
   <span class="text-accent-purple">parser/</span>      <span class="text-text-muted">tree-sitter engine + language queries</span>
   <span class="text-accent-purple">indexer/</span>     <span class="text-text-muted">File discovery, hashing, incremental state</span>
-  <span class="text-accent-cyan">graph/</span>       <span class="text-text-muted">Kuzu + LanceDB engines, search, ingestion</span>
+  <span class="text-accent-cyan">graph/</span>       <span class="text-text-muted">SQLite + LanceDB engines, search, ingestion</span>
   <span class="text-accent-amber">advisor/</span>     <span class="text-text-muted">Skill registry, matching, formatting</span>
   <span class="text-accent-green">server/</span>      <span class="text-text-muted">FastMCP server + tool implementations</span>
   <span class="text-accent-green">stats/</span>       <span class="text-text-muted">Token savings tracker</span></code></pre>

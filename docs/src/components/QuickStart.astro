@@ -13,16 +13,18 @@ function formatCode(code: string): string {
 const steps = [
   {
     number: "1",
-    title: "Install",
-    code: `git clone https://github.com/smrf1093/Avicenna.git
-cd Avicenna
-python -m venv .venv && source .venv/bin/activate
-pip install -e .`,
+    title: "Install as Plugin (Recommended)",
+    code: `/plugin install avicenna@claude-plugins-official`,
+    note: "Run this inside Claude Code. That's it — Avicenna tools are immediately available in all your projects.",
   },
   {
     number: "2",
-    title: "Initialize",
-    code: `python -m avicenna init /path/to/your/project`,
+    title: "Or Install from Source",
+    code: `git clone https://github.com/smrf1093/Avicenna.git
+cd Avicenna
+python -m venv .venv && source .venv/bin/activate
+pip install -e .
+python -m avicenna init /path/to/your/project`,
     note: "Registers the MCP server, indexes your codebase, and creates a CLAUDE.md — all in one command.",
   },
   {
